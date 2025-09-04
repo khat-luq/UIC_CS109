@@ -1,0 +1,41 @@
+%-------------------------------------------
+% Project 1: Temperature Sensor Analysis
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+
+%%% Your data loading code goes here
+
+load('tempdata.mat'); % Loads the 5 variables each for Temperature and Time as temp_# and time_# respectively (with # representing the index count)
+
+
+%%% Your code for solving the problem and assigning values to the specified variable names goes here
+
+timeMinutes = [time_1, time_2, time_3, time_4, time_5] / 60; % Converts the time variables provided from seconds to minutes and stores them into the timeMinutes array.
+
+% Time Duration Calculations (Minutes):
+duration_12 = timeMinutes(2) - timeMinutes(1); % Duration between time intervals 1 and 2 in minutes.
+duration_23 = timeMinutes(3) - timeMinutes(2); % Duration between time intervals 2 and 3 in minutes.
+duration_34 = timeMinutes(4) - timeMinutes(3); % Duration between time intervals 3 and 4 in minutes.
+duration_45 = timeMinutes(5) - timeMinutes(4); % Duration between time intervals 4 and 5 in minutes.
+
+% Ramp Rate Calculations:
+rate_12 = (temp_2 - temp_1) / duration_12; % Calculation of the 'Temperature Change (Celsius) / Time (Minutes)' between intervals 1 and 2.
+rate_23 = (temp_3 - temp_2) / duration_23; % Calculation of the 'Temperature Change (Celsius) / Time (Minutes)' between intervals 2 and 3.
+rate_34 = (temp_4 - temp_3) / duration_34; % Calculation of the 'Temperature Change (Celsius) / Time (Minutes)' between intervals 3 and 4.
+rate_45 = (temp_5 - temp_4) / duration_45; % Calculation of the 'Temperature Change (Celsius) / Time (Minutes)' between intervals 4 and 5.
+
+% Rate Statistics Calculations:
+rateArray = [rate_12, rate_23, rate_34, rate_45]; % Takes the previously calculated ramp rates and defines them in an array; this is to easily find Min/Max/Mean/Rate Range.
+    rate_min = min(rateArray); % Determines the smallest integer value of the rate defined in the above array.
+    rate_max = max(rateArray); % Determines the largest integer value of the rate defined in the above array.
+    rate_mean = (rate_12 + rate_23 + rate_34 + rate_45) / 4; % Determines the average integer value of the rate defined in the above array.
+        % NOTE that rate_mean must be calculated this way as the original function, `rate_mean = mean(rateArray)` provides the answer in Double, not int64.
+    rate_range = range(rateArray); % Determines the rate range value (difference between the maximum and minimum) as an integer from the above array.
+
+
+%%% Your code for displaying the results goes here
+disp("Minimum Rate: " + rate_min + " °C/min")
+disp("Maximum Rate: " + rate_max + " °C/min")
+disp("Mean Rate: " + rate_mean + " °C/min")  
+disp("Rate Range: " + rate_range + " °C/min") % These previous 4 blocks all display the titles Minimum Rate, Maximum Rate, Mean Rate, and Rate Range with their respective values in the following format: "TITLE: [value] °C/min".
