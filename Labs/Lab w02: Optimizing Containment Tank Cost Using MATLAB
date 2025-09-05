@@ -1,0 +1,12 @@
+%-------------------------------------------
+% Lab w02: Optimizing Containment Tank Cost Using MATLAB
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+
+radius = 5; % Defines the radius of the containment tank used.
+cost = ((32440)/radius) + 425 * pi * radius; % Calculates the cost of the respective containment tank based on the provided radius as per the defined equation.
+
+% Displays the Final Cost it would take to build the containment tank in dollars and its respective radius.
+disp("Final Cost: $" + cost)
+disp("Radius: " + radius)
