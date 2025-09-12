@@ -1,0 +1,17 @@
+weightInPounds = randi([100,260],1)
+MET = randi([1, 16],1)
+timeInMinutes = randi([30,120],1)
+%-------------------------------------------
+% LabW03: Expression for calories burned during workout
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+
+% Convert weight from pounds to kilograms
+weight = weightInPounds/2.2;
+
+% Convert time from minutes to hours
+time = timeInMinutes/60;
+
+% Calculate calories burned from the defined formula above
+caloriesBurned = weight * time * MET
