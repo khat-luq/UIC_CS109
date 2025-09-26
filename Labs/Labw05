@@ -8,10 +8,10 @@
 function [avgValues, minValues, maxValues, sizeOfLabs] = labw05(x)
 
 % Creates the respective Lab Arrays from "x"
-lab1 = x([1:4:end])
-lab2 = x([2:4:end])
-lab3 = x([3:4:end])
-lab4 = x([4:4:end])
+lab1 = x([1:4:end]);
+lab2 = x([2:4:end]);
+lab3 = x([3:4:end]);
+lab4 = x([4:4:end]);
 
 % Creates arrays for Mean, Min, Max, and Size of the labs
 avgValues = [mean(lab1), mean(lab2), mean(lab3), mean(lab4)]
