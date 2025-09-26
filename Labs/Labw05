@@ -1,0 +1,22 @@
+%-------------------------------------------
+% Labw05
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+
+% Assigns the function for "labw05" based on the input "x"
+function [avgValues, minValues, maxValues, sizeOfLabs] = labw05(x)
+
+% Creates the respective Lab Arrays from "x"
+lab1 = x([1:4:end])
+lab2 = x([2:4:end])
+lab3 = x([3:4:end])
+lab4 = x([4:4:end])
+
+% Creates arrays for Mean, Min, Max, and Size of the labs
+avgValues = [mean(lab1), mean(lab2), mean(lab3), mean(lab4)]
+minValues = [min(lab1), min(lab2), min(lab3), min(lab4)]
+maxValues = [max(lab1), max(lab2), max(lab3), max(lab4)]
+sizeOfLabs = [size(lab1,2), size(lab2,2), size(lab3,2), size(lab4,2)]
+
+end
