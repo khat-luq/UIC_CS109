@@ -1,0 +1,183 @@
+%{ 
+%-------------------------------------------
+% Project 3: Visualization of Reservoir Dam Records
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+%}
+
+function status = waterAnalysis(data_index, option)
+%waterAnalysis: Determines the water level status or generates plots.
+%   Inputs:
+%       data_index (integer): The day (index) to check.
+% 		option (integer): The option for the function.
+%   Outputs:
+%       status (string): Water status (for option 1).
+
+    %% ======================= INITIALIZATION =======================
+    % Set a default value for the output variable
+    status = "No Checking";
+    
+    % %% TODO 1: Load the data file
+    % Load the "water_data.mat" file into the workspace.
+    load("water_data.mat")
+    
+    %% ======================= VALIDATION =======================
+    %% Complete the validation Code
+    
+    
+    
+    % Assigns "option" to be between values 1 and 3 to keep the input valid. 
+    if option >= 1 && option <= 3 && data_index >= 1 && data_index <= length(water_level_meters)
+        
+        
+        
+        %% ======================= MAIN LOGIC =======================
+        % Use an if-elseif structure to handle different options.
+        
+        if option == 1
+            %% --- OPTION 1: Get Status for a Single Day ---
+            
+            % %% TODO 2: Extract the specific water level
+            % From the 'water_level_meters' vector, get the level for the day specified by 'data_index'.
+            
+            % Retrieves the water level of the respective day through the index array.
+            level = water_level_meters(data_index)
+
+            % %% TODO 3: Check the water level against thresholds
+            % Use a nested if-elseif-else structure to determine the status.
+            %   - If level is greater than 180, set status to 'Danger'.
+            %   - Else if level is greater than 170, set status to 'Warning'.
+            %   - Else if level is greater than or equal to 150, set status to 'Normal'.
+            %   - Otherwise, set the status to 'Too Low'.
+            
+            if level > 180
+                status = "Danger" % Assigns status if water level > 180m
+            elseif level > 170
+                status = "Warning" % Assigns status if water level > 170m
+            elseif level >= 150
+                status = "Normal" % Assigns status if water level >= 150m
+            else
+                status = "Too Low" % Assigns status if water level < 150m
+            end
+            
+            % Display the final status in the command window.
+            disp(status)
+            
+        elseif option == 2
+            %% --- OPTION 2: Generate a Simple Plot ---
+            
+            % %% TODO 4: Create a new figure, is done
+            figure;
+            
+            % %% TODO 5: Define data for plotting
+            % Create a vector for the x-axis named 'days_to_plot' that goes from 1 to 30.
+            
+            % Restricts the graph between days 1:30 as defined by "time_days" (1-30 days).
+            days_to_plot = [1:30];
+            
+            % %% TODO 6: Plot the data
+            % Plot 'water_level_meters' against 'days_to_plot'.
+            % Customize the plot with the following styles:
+            %   - A green, solid line with asterisk markers ('g*-').
+            %   - A LineWidth of 2.
+            %   - A MarkerSize of 8.
+            
+            % Creates a Water Level (m) VS Days graph with dashed green line and a line width and marker sized 2 and 8 respectivly.
+            plot(days_to_plot, water_level_meters, 'g*-', 'LineWidth', 2, 'MarkerSize', 8);
+            
+            % %% TODO 7: Format the plot
+            % Add an x-axis label: 'Time (day)'
+            % Add a y-axis label: 'Water Level (m)'
+            % Turn on the grid.
+            
+            % Assigns the appropriate "Day" and "Water Level" label to each respective axis, and turns on the grid.
+            xlabel('Time (day)');
+            ylabel('Water Level (m)');
+            
+            grid on;
+            
+        elseif option == 3
+            %% --- OPTION 3: Generate a Categorized Plot ---
+            
+            % %% TODO 8: Create a new figure, is done
+
+            figure;
+            
+            % Define variables for the data ranges.
+            days_range = 1:30;
+            levels_range = water_level_meters;
+            
+            % %% TODO 9: Create logical indices
+            % Create four logical index variables to identify which days fall into each category.
+            %   - danger_idx: for levels greater than 180.
+            %   - warning_idx: for levels between 170 (exclusive) and 180 (inclusive).
+            %   - normal_idx: for levels between 150 (inclusive) and 170 (inclusive).
+            %   - too_low_idx: for levels less than 150.
+            
+            danger_idx = levels_range > 180; % Logical index for days water level is classified as "Danger" (as defined above).
+            warning_idx = levels_range <= 180 & levels_range >= 170; % Logical index for days water level is classified as "Warning" (as defined above).
+            normal_idx = levels_range <= 170 & levels_range >= 150; % Logical index for days water level is classified as "Normal" (as defined above).
+            too_low_idx = levels_range < 150; % Logical index for days water level is classified as "Too Low" (as defined above).
+            
+            % %% TODO 10: Plot multiple data series
+            % Enable holding on the current axes to overlay multiple plots.
+            hold on
+            
+            % Plot 1: The main data trend line (all points) as a gray, solid line.
+            
+            % Creates a Water Level vs. Days graph with a solid gray trendline.
+            plot(days_range, levels_range, '-', 'Color', [0.5, 0.5, 0.5]);
+            
+            % Plot 2-5: For each category, first check if any data points exist in that
+            % category using 'if any(...)'. If they do, plot just those points using
+            % the logical index.
+            
+            % Plot Danger points: red, upward-pointing triangles ('^'), filled in, with MarkerSize 8.
+            if any(danger_idx)
+                plot(days_range(danger_idx), levels_range(danger_idx), '^', 'Color', 'r', 'MarkerFaceColor', 'r', 'MarkerSize', 8);
+            end
+                    
+            % Plot Warning points: orange, circles ('o'), filled in, with MarkerSize 8.
+            if any(warning_idx)
+                plot(days_range(warning_idx), levels_range(warning_idx), 'o', 'Color', [0.93, 0.69, 0.13], 'MarkerFaceColor', [0.93, 0.69, 0.13], 'MarkerSize', 8); % Orange
+            end
+                    
+            % Plot Normal points: green, asterisks ('*'), with MarkerSize 8.
+            if any(normal_idx)
+                plot(days_range(normal_idx), levels_range(normal_idx), '*', 'Color', 'g', 'MarkerSize', 8);
+            end
+                    
+            % Plot Too Low points: blue, squares ('s'), filled in, with MarkerSize 8.
+            if any(too_low_idx)
+                plot(days_range(too_low_idx), levels_range(too_low_idx), 's', 'Color', 'b', 'MarkerFaceColor', 'b', 'MarkerSize', 8);
+            end
+            
+            % Disable holding on the axes.
+            
+            hold off;
+            
+            % %% TODO 11: Final Formatting
+            % Add the x and y labels.
+            % Turn on the grid.
+            % Add a legend with descriptive entries for all 5 plotted elements
+            % (Data Trend, Danger (> 180m), Warning (170-180m), Normal (150-170m), Too Low (< 150m)).
+            
+            % Assigns the appropriate "Day" and "Water Level" label to each respective axis, and turns on the grid.
+            xlabel("Time (day)");
+            ylabel("Water Level (m)");
+        
+            grid on;
+            
+            % Creates a legend for all 5 plotted elements.
+            legend("Data Trend", "Danger (> 180m)", "Warning (170-180m)", "Normal (150-170m)", "Too Low (< 150m)")
+            
+        end % End of the main if-elseif structure
+    else
+        disp("data index or option is invalid")
+        
+        % Sets the status as 'Invalid' if the option is not between 1-3 (invalid input in function).
+        status = "Invalid";
+    end
+
+end % End of the function
