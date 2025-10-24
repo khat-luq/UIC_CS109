@@ -1,0 +1,31 @@
+%-------------------------------------------
+% LABw09: Dart Game: Score and Message
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+function [scoreForYellow,message] = DartGame(yellow);
+% The following determines the score for the yellow region and assigns its appropriate score.
+    if (yellow <= 1);
+        scoreForYellow = 0;
+    elseif (yellow == 2);
+        scoreForYellow = 10;
+    elseif (yellow < 5);
+        scoreForYellow = 20;
+    elseif (yellow < 9);
+        scoreForYellow = 50;
+    else (yellow >= 9);
+        scoreForYellow = 100;
+    end
+% The following displays the message for the appropriate score following the format "Congratulations, you get $[scoreForYellow]" UNLESS the score is less than 10, in which case two special messages appear.
+    % TEST CASE: Assume the player has landed greater than 2 but less than 5 darts in the yellow region (earning them a score of 20 points).
+    % EXPECTED OUTPUT:
+        % scoreForYellow = 20
+        % message = "Congratulations, you get $20"
+    if (scoreForYellow == 0);
+        message = "You did not win any money. Wish you better luck next time!";
+    elseif (scoreForYellow == 10);
+        message = "You did not win any money, but you get free ice cream!";
+    else (scoreForYellow >= 20);
+        message = "Congratulations, you get $" + scoreForYellow;
+    end
+end
