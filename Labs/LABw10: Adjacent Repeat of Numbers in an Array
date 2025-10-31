@@ -1,0 +1,19 @@
+%-------------------------------------------
+% LABw10: Adjacent Repeat of Numbers in an Array
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+
+function adjacentRepeat = HasAdjacentRepeat(inArray) 
+% Starts the initial count for the number of elements in 'inArray'.    
+numElements = numel(inArray)
+    % Assigns the default value for 'adjacentRepeat' to be 0. This may be changed by the code below.
+    adjacentRepeat = 0;
+    % The following creates an index starting from 2 to the end of the 'inArray' array.
+    for i = 2:length(inArray)
+        % This checks the equivalancy of a specific element of the array (starting from 2 to the end) to see if it is equal to the element offset by 1 (in other words, the previous element) and assigns its adjacentRepeat value to 0 if the condition ever holds true.
+        if inArray(i) == inArray(i-1)
+            adjacentRepeat = 1;
+        end
+    end
+end
