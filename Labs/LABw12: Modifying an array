@@ -1,0 +1,27 @@
+%-------------------------------------------
+% LABw12: Modifying an array
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+
+function [out1, out2] = ModifyArray(A,option)
+    % Predefines out1 and out2 to be empty.
+    out1 = [];
+    out2 = [];
+    if nargin < 2 % Checks the number of parameters to be more than 2, otherwise, it will return.
+        return
+    end
+    if (option == 1) % Applies OPTION 1 to the array; out1 has array A flipped left to right, then upside down, and leaves out2 empty.
+        out1 = fliplr(A);
+        out1 = flipud(out1);
+    elseif (option == 2) % Applies OPTION 2 to the array; out2 has a rotated array A counterclockwise while out1 remains empty.
+        out2 = rot90(A);
+    elseif (option == 3) % Applies OPTION 3 to the array; out1 follows OPTION 1's logic and out2 is out1's lower triangular.
+        out1 = fliplr(A);
+        out1 = flipud(out1);
+        out2 = tril(out1);
+    elseif (option == 4) % Applies OPTION 4 to the array; out2 follows OPTION 2's logic and out1 is out2's upper triangular.
+        out2 = rot90(A);
+        out1 = triu(out2);
+    end
+end
