@@ -1,0 +1,51 @@
+%-------------------------------------------
+% LABw13: Green Screen
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+
+% This function overlays one image over another using a filtering 
+% algorithm with a green screen.
+%
+% INPUTS
+%   frontFile - string filename of the front image 
+%               (with a red, green, or blue screen)
+%   backFile - string filename of the background image
+%   ch       - 1 (red screen), 
+%              2 (green screen), 
+%              3 (blue screen)
+%   cd - channel difference (described above)
+%
+% OUTPUTS
+%   newImage - data array for the combined image. 
+%
+% A plot of the new image your code should have:
+%   imshow(newImage) 
+% at the bottom so that it plots new the image.
+function [newImage] = greenScreen(frontFile, backFile, ch, cd)
+    imf = imread(frontFile);
+    imb = imread(backFile); % Sets the foreground and background to "imf" and "imb" respectivly.
+    newImage = imf; % Predefines "newImage"
+    other = 1:3; 
+    other(ch) = []; % Sets "other" to be the channels that are NOT selected in "ch".
+    sz = size(imf);
+    sz2 = size(imb); % Grabs the size of "imf" and "imb" respectivly.
+
+    if sz == sz2 % Ensures there is not a size mismatch between the two images.
+        for r = 1:sz(1); % The following cycles through every pixel on every row/column and runs the below on each pixel.
+            for c = 1:sz(2);
+                image_SelectedValue = imf(r,c,ch); % This creates a new image channel with only the selected color layer (i.e. if the blue channel is selected, this image only outputs the blue channel).
+                image_OtherValue_1 = imf(r,c,other(1)); 
+                image_OtherValue_2 = imf(r,c,other(2)); % The two above select the other two color channels not selcted by "ch" (i.e. if we selcted blue, this chooses red and green).
+                
+                if image_SelectedValue > cd*image_OtherValue_1 && image_SelectedValue > cd*image_OtherValue_2 % This compares the value of the color of the screen (red, green, or blue) to the other two to see if it is brighter than CD times the other two channels at that particular pixel.
+                    newImage(r,c,:) = imb(r,c,:); % If the conditions hold true above, the new image will be set to the background channel at that particular pixel. 
+                else
+                    newImage(r,c,:) = imf(r,c,:); % If the conditions above hold FALSE, the new image will be set to the foreground channel.
+                end
+            end
+        end
+    else
+        newImage = []; % Sets the new image empty if there is a size mismatch between the two.
+    end
+end
