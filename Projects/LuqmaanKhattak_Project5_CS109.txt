@@ -1,0 +1,56 @@
+%-------------------------------------------
+% Project 5: Thermal Fault Detection
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+
+function outputImage = thermalFaultDetection(thermalImage, threshold)
+    % thermalFaultDetection simulates processing of a thermal image
+    % to detect hotspots above a given threshold.
+    %
+    % Inputs:
+    %   thermalImage   - m x n size thermal image in grayscale
+    %   threshold  - temperature threshold for fault detection
+    %
+    % Outputs:
+    %    outputImage - mx n size image with 1 in red channel for hotspots
+
+   if numel(size(thermalImage)) ~= 2 % This ensures that the array is a 2D one, and will reject any other input and set the output to NaN (Error Test Case).
+       outputImage = NaN;
+       return
+   end
+
+    % Create output RGB image (3D array)
+    % Initialize as grayscale (replicate into 3 channels)
+    grayImage = mat2gray(thermalImage); % Grayscales the original image.
+    
+    % The below converts the image into a 3D array more suitable for the RGB format.
+    outputImage = zeros([size(thermalImage), 3]); % Defines the 3D array initially
+    outputImage(:, :, 1) = grayImage;
+    outputImage(:, :, 2) = grayImage;
+    outputImage(:, :, 3) = grayImage; % Sets each channel RGB to the outputImage.
+
+    % ===== Process each pixel =====
+    
+    imageSize = size(thermalImage); % Defines imageSize as the size of the thermal image.
+    % The FOR loops cycles through every pixel by going through every row/column.
+    for r = 1:imageSize(1)
+        for c = 1:imageSize(2) 
+            if thermalImage(r, c, :) > threshold 
+                outputImage(r, c, :) = [1, 0, 0]; % If the particular pixel in the thermal image is above the threshold value, it will write a red pixel at the exact spot on the output image (with the gray image as a background).
+            end
+        end
+    end
+
+
+    % ===== DO NOT CHANGE =====
+    % Display results
+    figure;
+    subplot(1,2,1);
+    imagesc(thermalImage); colormap('hot'); colorbar;
+    title('Original Thermal Image');
+
+    subplot(1,2,2);
+    imshow(outputImage);
+    title('Processed Image with Fault Detection');
+end
