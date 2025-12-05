@@ -1,0 +1,90 @@
+%-------------------------------------------
+% Project 6 - Particle Tracking
+% Course: CS 109, Fall 2025, UIC
+% Author: Luqmaan Khattak
+%-------------------------------------------
+
+function trajectories = particleMotionTracking(velocityX, velocityY, n, steps)
+    % particleMotionTracking tracks particle motion in a 2D velocity field
+    %
+    % Inputs:
+    %   velocityX - m x m matrix of x-component velocities
+    %   velocityY - m x m matrix of y-component velocities
+    %   n         - number of particles
+    %   steps     - number of steps to simulate
+    %
+    % Output:
+    %   trajectories - n x steps x 2 array of particle positions
+    rng(23); %% DO NOT REMOVE
+    % Start here
+    
+    if size(velocityX) ~= size(velocityY) %|| (n < 0) || (steps < 0) % Ensures that the size of the two velocity arrays are the same.
+        trajectories = NaN;
+        return;
+    end
+        
+    if (n < 0) || (steps < 0) % Ensures that n and the number of steps are positive integers.
+        disp('Step Size or N error!');
+        trajectories = NaN;
+        return;
+    end
+        
+    
+    trajectories = NaN(n,steps,2); % Predefines the trajectories array as NaN.
+    m = size(velocityX,1);
+    
+    for p = 1:n % Assigns the initial random value to the first position of the trajectories array.
+        Initial_x = randi([1 m-1]);
+        Initial_y = randi([1 m-1]);
+        trajectories(p,1,:) = [Initial_x, Initial_y];
+    end
+    
+    % Logic for the creation of the trajectories array.
+    for s = 2:steps
+        for p = 1:n
+                x_old = trajectories(p,s-1,1); % Assigns the x_old and y_old to be the previous value in the trajectories array.
+                y_old = trajectories(p,s-1,2);
+                
+                if isnan(x_old) || isnan(y_old) % Ensures that the x_old value is not NaN, otherwise assigns the current trajectories value as NaN.
+                    trajectories(p, s, 1) = NaN;
+                    trajectories(p, s, 2) = NaN;
+                    continue;
+                end
+                
+                index_Xpos = round(x_old); % Pre-rounds the x_old and y_old values for use within the indexing function.
+                index_Ypos = round(y_old);
+                
+                if (index_Xpos < 1) || (index_Xpos > m) || (index_Ypos < 1) || (index_Ypos > m) % Ensures that the index value is between [1, m] (within bounds), otherwise assigns the x_new and y_new as NaN.
+                    x_new = NaN;
+                    y_new = NaN;
+                else
+                    x_new = x_old + velocityX(index_Xpos, index_Ypos) * 1; % If not NaN, follows through with the x_new and y_new formula as defined.
+                    y_new = y_old + velocityY(index_Xpos, index_Ypos) * 1;
+                end
+                trajectories(p,s,1) = x_new; % Assigns the x_new and y_new values to be the current values of the trajectories array.
+                trajectories(p,s,2) = y_new;
+        end
+    end
+    
+    %%% DO NOT CHANGE 
+    % Plot results
+    figure;
+    hold on;
+    colors = lines(n); % distinct colors for each particle
+    for p = 1:n
+        x_coords = squeeze(trajectories(p,:,1));
+        y_coords = squeeze(trajectories(p,:,2));
+
+        % Remove NaN values for plotting
+        valid = ~isnan(x_coords) & ~isnan(y_coords);
+        if any(valid)
+            plot(x_coords(valid), y_coords(valid), '-o', 'Color', colors(p,:));
+        end
+    end
+    title('Particle Trajectories');
+    xlabel('X Position');
+    ylabel('Y Position');
+    axis([1 m 1 m]);
+    grid on;
+    hold off;
+end
